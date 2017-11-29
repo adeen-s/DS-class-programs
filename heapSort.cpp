@@ -1,49 +1,35 @@
 #include<iostream>
 using namespace std;
 
-void adjust(int a[],int n) {
-	int i,j,item;
-	j = 0;
-	item = a[j];
-	i = 2*j+1;
-	while(i<=n-1) {
-		if(i+1 <= n-1)
-		   if(a[i] <a[i+1])
-		    i++;
-		if(item<a[i]) {
-			a[j] = a[i];
-			j = i;
-			i = 2*j+1;
-		} else
-		   break;
-	}
-	a[j] = item;
-}
+void heapify(int arr[], int n, int i) {
+	int max = i;
+	int l = ((2 * i) + 1);
+	int r = ((2 * i) + 2);
 
-void heapify(int a[],int n) {
-	int k,i,j,item;
-	for (k=1;k<n;k++) {
-		item = a[k];
-		i = k;
-		j = (i-1)/2;
-		while((i>0)&&(item>a[j])) {
-			a[i] = a[j];
-			i = j;
-			j = (i-1)/2;
-		}
-		a[i] = item;
+	if(l < n && arr[l] > arr[max]) {
+		max = l;
+	}
+
+	if(r < n && arr[r] > arr[max]) {
+		max = r;
+	}
+
+	if(max != i) {
+		swap(arr[i], arr[max]);
+		heapify(arr, n ,max);
 	}
 }
 
-void heapsort(int a[],int n) {
-	int i,t;
-	heapify(a,n);
-	for (i=n-1;i>0;i--) {
-		t = a[0];
-		a[0] = a[i];
-		a[i] = t;
-		adjust(a,i);
+void heapsort(int arr[], int n) {
+	for(int i = ((n / 2) - 1); i >= 0; i--) {
+		heapify(arr, n, i);
 	}
+
+	for(int i = n - 1; i >= 0; i--) {
+		swap(arr[i], arr[0]);
+		heapify(arr, i, 0);
+	}
+
 }
 
 int main() {
